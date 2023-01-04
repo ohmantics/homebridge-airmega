@@ -41,8 +41,13 @@ export const Config = {
 
   Filters : {
     PRE_FILTER_HAP_SUBTYPE : 'pre',
-    PRE_FILTER_CODE : '3121332',
     MAIN_FILTER_HAP_SUBTYPE : 'main',
-    MAIN_FILTER_CODE : '3104756', // previously 3111735
+    // 300S/400S filters
+    //PRE_FILTER_CODE : '3121332',
+    //MAIN_FILTER_CODE : '3104756', // previously 3111735
+
+    // AP-1512HHS filters
+    //PRE_FILTER_CODE : '3109126,',
+    //MAIN_FILTER_CODE : '3107167'
   },
 } as const;
