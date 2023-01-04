@@ -43,6 +43,7 @@ export class Client {
         name: filter.filterName,
         lifeLevel: filter.filterPer,
         code: filter.filterCode,
+        filterType: ['극세사망 프리필터', 'Max2 필터'].indexOf(filter.filterName),
       };
 
       return filterStatus;
