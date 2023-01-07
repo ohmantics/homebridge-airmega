@@ -2,7 +2,7 @@
 
 Control and monitor your Airmega purifier with HomeKit.
 
-[![npm version](http://img.shields.io/npm/v/@ohmantics/homebridge-airmega.svg)](https://npmjs.org/package/@ohmantics/homebridge-airmega)
+[![npm version](http://img.shields.io/npm/v/@ohmantics/homebridge-airmega.svg)](https://npmjs.org/package/@ohmantics/homebridge-airmega) [![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
 
 ## Functionality
 
@@ -15,7 +15,7 @@ Control and monitor your Airmega purifier with HomeKit.
 
 * Installation of [Homebridge](https://github.com/nfarina/homebridge)
 * iOS 11 or later
-* Airmega 400S or 300S connected to WiFi and registered with the IOCare app
+* Airmega AP-1512HHS, 300S, or 400S connected to WiFi and registered with the IOCare app.
 
 ## Installation
 
@@ -25,7 +25,7 @@ npm install -g homebridge-airmega
 
 ## Configuration
 
-Add the following to your homebridge config:
+Use the plugin [settings pane](https://www.npmjs.com/package/homebridge-config-ui-x) or add the following to your homebridge config:
 
 ```
 "platforms": [
@@ -69,3 +69,9 @@ Example of some Siri commands you can use:
 * "Set the air purifier to auto"
 * "Set the air purifier fan to medium"
 * "What's the air quality in \<room name\>?"
+
+## Notes
+
+* If you have a 250S, IconS, or other models not listed above, we'd like to [hear](https://github.com/ohmantics/homebridge-airmega/issues) from you.
+* The Coway servers will ask you to change your password every 60 days. The plugin always defers that request.
+* HomeKit will only display the status of one filter per purifier in the accessory details. It appears to choose randomly which filter it shows, however the filter change notification will appear if any filter needs changing. We've filed feedback with Apple to improve this.

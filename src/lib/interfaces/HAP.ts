@@ -24,6 +24,8 @@ export interface Service {
 
   setCharacteristic(...args: any[]): Service;
   getCharacteristic(...args: any[]): Characteristic;
+  addLinkedService(service: Service);
+  removeLinkedService(service: Service);
 }
 
 export interface Characteristic {

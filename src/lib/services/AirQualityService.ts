@@ -10,6 +10,10 @@ export class AirQualityService extends AbstractService {
 
     airQualityService.getCharacteristic(HAP.Characteristic.AirQuality)
       .on('get', this.getAirQuality.bind(this));
+
+    const purifierService = this.accessory.getService(HAP.Service.AirPurifier);
+    purifierService.addLinkedService(airQualityService);
+
   }
 
   getOrCreateAirQualityService(): Service {

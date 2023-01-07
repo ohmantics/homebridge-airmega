@@ -153,6 +153,7 @@ export class PurifierService extends AbstractService {
 
   async getRotationSpeed(callback): Promise<void> {
     const intervals = {
+      0: 0,
       1: 20,
       2: 50,
       3: 100,

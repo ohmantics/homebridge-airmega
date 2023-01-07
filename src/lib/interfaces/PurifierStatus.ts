@@ -36,10 +36,16 @@ export interface Status {
   airQuality: AirQuality;
 }
 
+export enum FilterType {
+  Pre = 0,
+  Main = 1
+}
+
 export interface FilterStatus {
   name: string;
   lifeLevel: number;
   code: string;
+  filterType: FilterType;
 }
 
 export interface Metadata {

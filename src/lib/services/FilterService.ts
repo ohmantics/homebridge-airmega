@@ -3,6 +3,7 @@ import { Config } from '../Config';
 import { HAP } from '../HAP';
 import { Service } from '../interfaces/HAP';
 import { AbstractService } from './AbstractService';
+import { FilterType } from '../interfaces/PurifierStatus';
 import { Logger } from '../Logger';
 
 export class FilterService extends AbstractService {
@@ -21,6 +22,11 @@ export class FilterService extends AbstractService {
 
     preFilterService.getCharacteristic(HAP.Characteristic.FilterLifeLevel)
       .on('get', this.getPreFilterLifeLevel.bind(this));
+
+    // need to use linked services to get Apple's Home app to show the filter status
+    const purifierService = this.accessory.getService(HAP.Service.AirPurifier);
+    purifierService.addLinkedService(mainFilterService);
+    purifierService.addLinkedService(preFilterService);
   }
 
   getOrCreateMainFilterService(): Service {
@@ -45,7 +51,7 @@ export class FilterService extends AbstractService {
 
   async getMainFilterChangeIndication(callback): Promise<void> {
     try {
-      const indication = await this.getChangeIndicationForFilter(Config.Filters.MAIN_FILTER_CODE);
+      const indication = await this.getChangeIndicationForFilter(FilterType.Main);
       callback(null, indication);
     } catch(e) {
       callback(e);
@@ -54,7 +60,7 @@ export class FilterService extends AbstractService {
 
   async getPreFilterChangeIndication(callback) {
     try {
-      const indication = await this.getChangeIndicationForFilter(Config.Filters.PRE_FILTER_CODE);
+      const indication = await this.getChangeIndicationForFilter(FilterType.Pre);
       callback(null, indication);
     } catch(e) {
       callback(e);
@@ -63,7 +69,7 @@ export class FilterService extends AbstractService {
 
   async getMainFilterLifeLevel(callback): Promise<void> {
     try {
-      const lifeLevel = await this.getLifeLevelForFilter(Config.Filters.MAIN_FILTER_CODE);
+      const lifeLevel = await this.getLifeLevelForFilter(FilterType.Main);
       callback(null, lifeLevel);
     } catch(e) {
       callback(e);
@@ -72,17 +78,17 @@ export class FilterService extends AbstractService {
 
   async getPreFilterLifeLevel(callback): Promise<void> {
     try {
-      const lifeLevel = await this.getLifeLevelForFilter(Config.Filters.PRE_FILTER_CODE);
+      const lifeLevel = await this.getLifeLevelForFilter(FilterType.Pre);
       callback(null, lifeLevel);
     } catch(e) {
       callback(e);
     }
   }
 
-  async getChangeIndicationForFilter(code: string): Promise<any> {
+  async getChangeIndicationForFilter(filterType: FilterType): Promise<any> {
     try {
       const status = await this.purifier.waitForFilterStatusUpdate();
-      const statusForFilter = status.find(filter => filter.code === code);
+      const statusForFilter = status.find(filter => filter.filterType === filterType);
       let indication;
 
       if (statusForFilter.lifeLevel <= 20) {
@@ -93,19 +99,20 @@ export class FilterService extends AbstractService {
 
       return indication;
     } catch(e) {
-      Logger.error(`Unable to get filter change indication for ${code}`, e);
+      Logger.error(`Unable to get filter change indication for ${FilterType[filterType.toString()]}`, e);
       throw e;
     }
   }
 
-  async getLifeLevelForFilter(code: string): Promise<number> {
+  async getLifeLevelForFilter(filterType: FilterType): Promise<number> {
     try {
       const status = await this.purifier.waitForFilterStatusUpdate();
-      const statusForFilter = status.find(filter => filter.code === code);
+      const statusForFilter = status.find(filter => filter.filterType === filterType);
 
+      Logger.debug(`Filter ${filterType} (type: ${FilterType[filterType.toString()]} name: '${statusForFilter.name}') life level is ${statusForFilter.lifeLevel}.`);
       return statusForFilter.lifeLevel;
     } catch(e) {
-      Logger.error(`Unable to get filter life level for ${code}`, e);
+      Logger.error(`Unable to get filter life level for ${FilterType[filterType.toString()]}`, e);
       throw e;
     }
   }
