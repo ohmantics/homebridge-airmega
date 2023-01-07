@@ -1,6 +1,6 @@
 {
   "name": "@ohmantics/homebridge-airmega",
-  "version": "0.0.0-development",
+  "version": "3.4.0",
   "description": "Homebridge plugin for the Airmega air purifier",
   "main": "dist/index.js",
   "author": "Andrew Schaper",
@@ -58,44 +58,63 @@
     "homebridge-plugin"
   ],
   "release": {
-    "branches": [ "release*" ],
+    "branches": [
+      "release*"
+    ],
     "plugins": [
-      ["@semantic-release/commit-analyzer", {
-        "preset": "conventionalcommits",
-        "releaseRules": [{
-            "type": "build",
-            "scope": "deps",
-            "release": "patch"
-        }]
-      }],
-      ["@semantic-release/release-notes-generator", {
-        "preset": "conventionalcommits",
-        "presetConfig": {
-          "types": [
-            {
-              "type": "feat",
-              "section": "Features"
-            },
-            {
-              "type": "fix",
-              "section": "Bug Fixes"
-            },
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "conventionalcommits",
+          "releaseRules": [
             {
               "type": "build",
-              "section": "Dependencies and Other Build Updates",
-              "hidden": false
+              "scope": "deps",
+              "release": "patch"
             }
           ]
         }
-      }],
-      ["@semantic-release/exec", {
-        "prepareCmd": "git checkout -b ${branch.name}-${nextRelease.version} && git push --all -u"
-      }],
+      ],
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "preset": "conventionalcommits",
+          "presetConfig": {
+            "types": [
+              {
+                "type": "feat",
+                "section": "Features"
+              },
+              {
+                "type": "fix",
+                "section": "Bug Fixes"
+              },
+              {
+                "type": "build",
+                "section": "Dependencies and Other Build Updates",
+                "hidden": false
+              }
+            ]
+          }
+        }
+      ],
+      [
+        "@semantic-release/exec",
+        {
+          "prepareCmd": "git checkout -b ${branch.name}-${nextRelease.version} && git push --all -u"
+        }
+      ],
       "@semantic-release/npm",
-      ["@semantic-release/git", {
-        "assets": [ "package.json", "package-lock.json" ],
-        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-      }],
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "package.json",
+            "package-lock.json"
+          ],
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ],
       "@semantic-release/github"
     ]
   }
