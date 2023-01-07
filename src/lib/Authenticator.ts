@@ -63,16 +63,33 @@ export class Authenticator extends Client {
     const cookies = response.headers['set-cookie'];
 
     // //*[@id="kc-form-login"]/@action
-    const root = parse.parse(response.body);
-    const form = root.getElementById('kc-form-login');
+    let root = parse.parse(response.body);
+    let form = root.getElementById('kc-form-login');
     const action = form.getAttribute('action');
 
     const payload2 = this.buildOpenID2Payload(cookies, username, password);
     payload2.uri = decode(action);
     Logger.debug('Sending payload2', payload2);
 
-    const response2 = await request.post(payload2);
+    let response2 = await request.post(payload2);
     Logger.debug('Get response2', response2);
+
+    // We should get a 302 with a Location header. If we get a page back, then
+    // we're being asked to update the password. We'll defer that.
+    if (response2.statusCode === 200 &&
+        response2.headers['content-type'].indexOf('text/html') !== -1) {
+      Logger.log('Coway is asking that the password be updated as it has been at least 60 days since the last change. Deferring.');
+
+      root = parse.parse(response2.body);
+      form = root.getElementById('kc-password-change-form');
+      const form_uri = decode(form.getAttribute('action'));
+
+      const payload3 = this.buildPasswordChangeDeferPayload(cookies);
+      payload3.uri = form_uri;
+      Logger.debug('Sending payload3', payload3);
+      response2 = await request.post(payload3);
+      Logger.debug('Get response2 again', response2);
+    }
 
     const location_hdr = response2.headers['location'];
     return location_hdr?.match(/[^&]+&code=(.*)/)[1];
@@ -130,6 +147,27 @@ export class Authenticator extends Client {
         username: username,
         password: password,
         rememberMe: 'on',
+      },
+    };
+
+    return payload;
+  }
+
+  private buildPasswordChangeDeferPayload(cookies: string): AuthCode2Payload {
+    const payload: AuthCode2Payload = {
+      uri: '',
+      simple: false,
+      resolveWithFullResponse: true,
+      headers: {
+        'User-Agent': Config.USER_AGENT,
+        Cookie: cookies,
+      },
+      form: {
+        cmd: 'change_next_time',
+        checkPasswordNeededYn: 'Y',
+        current_password: '',
+        new_password: '',
+        new_password_confirm: '',
       },
     };
 
