@@ -1,0 +1,59 @@
+name: "🚀 release"
+
+on:
+  push:
+    branches: [ release ]
+  pull_request:
+    branches: [ release ]
+
+jobs:
+  build:
+    name: 🚀 publish
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 17.x, 18.x, 19.x]
+      fail-fast: false
+
+    steps:
+    - name: 📚 checkout
+      uses: actions/checkout@v3
+
+    - name: 🟢 node
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        registry-url: https://registry.npmjs.org
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build
+      run: npm run build
+
+  release:
+    name: 🚀 publish
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/release' }}
+    needs: [ build ]
+
+    steps:
+    - name: 📚 checkout
+      uses: actions/checkout@v3
+
+    - name: 🟢 node
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        registry-url: https://registry.npmjs.org
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+    - name: Publish via semantic-release
+      run: npm run semantic-release
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
