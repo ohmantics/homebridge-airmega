@@ -71,7 +71,7 @@ export class AirmegaPlatform {
 
     this.registerServices(purifier, accessory, config);
 
-    Logger.log(`Found ${purifier.name}`);
+    Logger.log(`Found "${purifier.name}"`);
   }
 
   registerServices(purifier: Purifier, accessory: Accessory, config: PluginConfig): void {
