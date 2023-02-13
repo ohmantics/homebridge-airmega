@@ -72,6 +72,7 @@ export class AirmegaPlatform {
     this.registerServices(purifier, accessory, config);
 
     Logger.log(`Found "${purifier.name}"`);
+    purifier.client.getMcuVersion(purifier.id);
   }
 
   registerServices(purifier: Purifier, accessory: Accessory, config: PluginConfig): void {
