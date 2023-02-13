@@ -29,6 +29,7 @@ export const Config = {
     TOKEN_REFRESH : 'CWIL0100',
     STATUS : 'CWIA0120',
     CONTROL : 'CWIG0603',
+    MCU_VERSION : 'CWIG0615',
     FILTERS : 'CWIA0800',
   },
 

@@ -33,10 +33,10 @@ export class Client {
 
   async getFilterStatus(id: string): Promise<FilterStatus[]> {
     const payload: Payload = await this.buildStatusPayload(id, Config.Endpoints.FILTERS);
-    Logger.debug('Sending payload', payload);
+    // Logger.debug('Sending payload', payload);
 
     const response = await this.sendRequest(payload);
-    Logger.debug('Got response', response);
+    // Logger.debug('Got response', response);
 
     const filterStatuses = response.body.filterList.map(filter => {
       const filterStatus: FilterStatus = {
@@ -51,6 +51,15 @@ export class Client {
 
     return filterStatuses;
   }
+
+  async getMcuVersion(id: string) {
+    const payload: Payload = await this.buildMcuPayload(id);
+
+    const response = await this.sendRequest(payload);
+    const s = JSON.stringify(response);
+    Logger.debug(`McuVersion: ${s}`);
+  }
+
 
   async setPower(id: string, on: boolean): Promise<void> {
     const value = on ? '1' : '0';
@@ -105,7 +114,7 @@ export class Client {
 
     const payload = this.buildPayload(Config.Endpoints.DEVICE_REFRESH, message);
 
-    await this.sendRequest(payload);
+    payload; //await this.sendRequest(payload);
   }
 
   private async buildStatusMessage(id: string, endpoint: string): Promise<Message> {
@@ -148,6 +157,22 @@ export class Client {
           comdVal: value,
           funcId: code,
         }],
+      },
+    };
+
+    const payload = this.buildPayload(endpoint, message);
+
+    return payload;
+  }
+
+  private async buildMcuPayload(id: string): Promise<Payload> {
+    const endpoint = Config.Endpoints.MCU_VERSION;
+    const messageHeader: MessageHeader = await this.buildMessageHeader(endpoint);
+
+    const message: Message = {
+      header: messageHeader,
+      body: {
+        deviceId: id,
       },
     };
 
