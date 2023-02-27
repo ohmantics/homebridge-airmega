@@ -4,7 +4,7 @@ import { Logger } from './Logger';
 
 export class TokenStore {
   static readonly TOKEN_KEY = 'tokens';
-  static readonly TOKEN_EXP_LENGTH = 3600000;
+  static readonly TOKEN_EXP_LENGTH = 3600000; // 1 hour in milliseconds
 
   private memoryStorage = {};
 
