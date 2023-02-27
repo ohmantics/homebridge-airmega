@@ -1,6 +1,6 @@
 {
   "name": "@ohmantics/homebridge-airmega",
-  "version": "0.0.0-development",
+  "version": "3.4.0",
   "description": "Homebridge plugin for the Airmega air purifier",
   "main": "dist/index.js",
   "author": "Andrew Schaper",
