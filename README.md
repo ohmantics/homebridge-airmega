@@ -74,4 +74,4 @@ Example of some Siri commands you can use:
 
 * If you have a IconS or other models not listed above, we'd like to [hear](https://github.com/ohmantics/homebridge-airmega/issues) from you.
 * The Coway servers will ask you to change your password every 60 days. The plugin always defers that request.
-* HomeKit will only display the status of one filter per purifier in the accessory details. It appears to choose randomly which filter it shows, however the filter change notification will appear if any filter needs changing. We've filed feedback with Apple to improve this. 
+* HomeKit will only display the status of one filter per purifier in the accessory details. It appears to choose randomly which filter it shows, however the filter change notification will appear if any filter needs changing. We've filed feedback with Apple to improve this.
