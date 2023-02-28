@@ -106,7 +106,7 @@
         "@semantic-release/exec",
         {
           "prepareCmd": "git checkout -b ${branch.name}-${nextRelease.version} && git push --all -u",
-          "publishCmd": "git checkout ${branch.name}-${nextRelease.version} && git pull release && git push"
+          "publishCmd": "git checkout ${branch.name}-${nextRelease.version} && git pull origin/release && git push"
         }
       ],
       "@semantic-release/npm",
