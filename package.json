@@ -1,6 +1,6 @@
 {
   "name": "@ohmantics/homebridge-airmega",
-  "version": "3.4.0",
+  "version": "0.0.0-development",
   "description": "Homebridge plugin for the Airmega air purifier",
   "main": "dist/index.js",
   "author": "Andrew Schaper",
@@ -105,12 +105,8 @@
       [
         "@semantic-release/exec",
         {
-<<<<<<< HEAD
-          "prepareCmd": "git checkout -b ${branch.name}-${nextRelease.version} && git push --all -u"
-=======
           "prepareCmd": "git checkout -b ${branch.name}-${nextRelease.version} && git push --all -u",
           "publishCmd": "git checkout -b ${branch.name}-${nextRelease.version} && git pull release && git push"
->>>>>>> main
         }
       ],
       "@semantic-release/npm",
