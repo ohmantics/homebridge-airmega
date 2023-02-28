@@ -50,6 +50,10 @@
   "bugs": {
     "url": "https://github.com/ohmantics/homebridge-airmega/issues"
   },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/ohmantics"
+  },
   "keywords": [
     "coway",
     "airmega",
@@ -101,7 +105,12 @@
       [
         "@semantic-release/exec",
         {
+<<<<<<< HEAD
           "prepareCmd": "git checkout -b ${branch.name}-${nextRelease.version} && git push --all -u"
+=======
+          "prepareCmd": "git checkout -b ${branch.name}-${nextRelease.version} && git push --all -u",
+          "publishCmd": "git checkout -b ${branch.name}-${nextRelease.version} && git pull release && git push"
+>>>>>>> main
         }
       ],
       "@semantic-release/npm",

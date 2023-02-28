@@ -148,6 +148,7 @@ export class Client {
           comdVal: value,
           funcId: code,
         }],
+        mqttDevice: true,
       },
     };
 
